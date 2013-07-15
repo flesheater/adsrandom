@@ -1,0 +1,46 @@
+<?php
+/*
+ * @file
+ * Simple example if you have 2 view blocks, showing at the same page with lets 
+ * say random nodes of a content type to prevent if a node is showed in the
+ * first block to show in the second. The machine names of the two views should 
+ * be replaced in the if statements for 'machine_name_of_first_view_block' and
+ * 'machine_name_of_second_view_block'
+ * 
+ * I have written this code for block views showing random adverts at the top
+ * and bottom of a page.
+ */
+
+
+/**
+ * hook_views_pre_render();
+ */
+function adsrandom_views_pre_render(&$view) {
+
+  //takes the id of a result and stores it in a session to be able to compare 
+  //it after
+  if($view->name == 'machine_name_of_first_view_block') {
+    if(isset($view->result[0])) {
+      $_SESSION['adsrandom_showed_advert'] = $view->result[0]->nid;
+    }
+  }
+} 
+
+/**
+ * hook_views_query_alter()to alter the view query and remove duplicate
+ */
+function adsrandom_views_query_alter(&$view, &$query) {
+
+  if($view->name == 'machine_name_of_second_view_block') {
+    if(isset($_SESSION['adsrandom_showed_advert'])) {
+      $new_where = array(
+        'field'    => 'node.nid', 
+        'value'    => $_SESSION['adsrandom_showed_advert'],
+        'operator' => '!='
+      );
+                        
+      $query->where[1]['conditions'][] = $new_where;
+      unset($_SESSION['adsrandom_showed_advert']);
+    }
+  }
+}

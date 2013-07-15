@@ -1,0 +1,6 @@
+name = "Views content to be showed once for 2 views as blocks"
+description = "Preventing a view content to be showed twice if 2 views are showed as blocks in a page"
+package = "All"
+core = "7.x"
+
+dependencies[] = views
