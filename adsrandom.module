@@ -19,8 +19,8 @@ function adsrandom_views_pre_render(&$view) {
 
   //takes the id of a result and stores it in a session to be able to compare 
   //it after
-  if($view->name == 'machine_name_of_first_view_block') {
-    if(isset($view->result[0])) {
+  if ($view->name == 'machine_name_of_first_view_block') {
+    if (isset($view->result[0])) {
       $_SESSION['adsrandom_showed_advert'] = $view->result[0]->nid;
     }
   }
@@ -31,8 +31,8 @@ function adsrandom_views_pre_render(&$view) {
  */
 function adsrandom_views_query_alter(&$view, &$query) {
 
-  if($view->name == 'machine_name_of_second_view_block') {
-    if(isset($_SESSION['adsrandom_showed_advert'])) {
+  if ($view->name == 'machine_name_of_second_view_block') {
+    if (isset($_SESSION['adsrandom_showed_advert'])) {
       $new_where = array(
         'field'    => 'node.nid', 
         'value'    => $_SESSION['adsrandom_showed_advert'],
